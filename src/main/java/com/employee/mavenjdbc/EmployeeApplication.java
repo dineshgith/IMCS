@@ -23,6 +23,10 @@ public class EmployeeApplication {
 		System.out.println("Enter Employee Department#, Ex: 121");
 		int dept = sc.nextInt();
 		employee.setDeptNo(dept);
+		System.out.println("Enter Employee Experience, Ex: 5.5");
+		float exp = sc.nextFloat();
+		employee.setExperience(exp);
+
 		try {
 			dboi.addEmployee(employee);
 		} catch (InvalidSalaryException e) {
@@ -45,12 +49,15 @@ public class EmployeeApplication {
 		System.out.println("Enter Employee Department#, Ex: 121");
 		int dept = sc.nextInt();
 		empl.setDeptNo(dept);
+		System.out.println("Enter Employee Experience, Ex: 5.5");
+		float exp = sc.nextFloat();
+		empl.setExperience(exp);
+
 		try {
 			dboi.updateEmployee(empl);
 		} catch (EmployeeNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch (InvalidSalaryException e) {
+		} catch (InvalidSalaryException e) {
 			e.printStackTrace();
 		}
 

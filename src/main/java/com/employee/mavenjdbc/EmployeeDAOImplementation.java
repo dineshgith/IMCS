@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class EmployeeDAOImplementation implements EmployeeDAO {
 	Connection connection;
-	PreparedStatement statement = null;
 
 	public EmployeeDAOImplementation() {
 		{
@@ -19,7 +18,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 				Class.forName("com.mysql.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-				
+
 			}
 			try {
 				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "Chandu_19");
@@ -34,12 +33,14 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public boolean addEmployee(Employee employee) {
 		if (employee != null)
 			try {
-				statement = connection
-						.prepareStatement("Insert into employees(id, name, salary, department ) values(?,?, ?, ?) ");
+
+				PreparedStatement statement = connection
+						.prepareStatement("Insert into employees(id, name, salary, department, experience ) values(?,?, ?, ?, ?) ");
 				statement.setInt(1, employee.getEmpId());
 				statement.setString(2, employee.getName());
 				statement.setDouble(3, employee.getSalary());
 				statement.setInt(4, employee.getDeptNo());
+				statement.setFloat(5, employee.getExperience());
 				statement.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -49,7 +50,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 
 	public boolean deleteEmployee(int id) {
 		try {
-			statement = connection.prepareStatement("Delete from employees where id=?");
+			PreparedStatement statement = connection.prepareStatement("Delete from employees where id=?");
 			statement.setInt(1, id);
 			statement.executeUpdate();
 		} catch (SQLException e) {
@@ -63,11 +64,13 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 
 	{
 		try {
-			statement = connection.prepareStatement("update employees set name=?, salary=?, department=? where id=?");
+			PreparedStatement statement = connection
+					.prepareStatement("update employees set name=?, salary=?, department=?, experience=? where id=?");
 			statement.setString(1, employee.getName());
 			statement.setDouble(2, employee.getSalary());
 			statement.setInt(3, employee.getDeptNo());
 			statement.setInt(4, employee.getEmpId());
+			statement.setFloat(5, employee.getExperience());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 
@@ -81,7 +84,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public List<Employee> getAllEmployees() {
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			statement = connection.prepareStatement("select * from employees");
+			PreparedStatement statement = connection.prepareStatement("select * from employees");
 			ResultSet rs = statement.executeQuery();
 			Employee emp;
 			if (rs != null)
@@ -92,10 +95,12 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 					emp.setName(rs.getString(2));
 					emp.setSalary(rs.getFloat(3));
 					emp.setDeptNo(rs.getInt(4));
+					emp.setExperience(rs.getFloat(5));
 					employees.add(emp);
 				}
 
 		} catch (SQLException e) {
+
 			e.printStackTrace();
 		}
 		return employees;
@@ -104,7 +109,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public Employee getEmployeeUsingId(int id) {
 		Employee emp = null;
 		try {
-			statement = connection.prepareStatement("select * from employees where id=?");
+			PreparedStatement statement = connection.prepareStatement("select * from employees where id=?");
 			statement.setInt(1, id);
 			ResultSet rs;
 			rs = statement.executeQuery();
@@ -114,6 +119,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 				emp.setDeptNo(rs.getInt(4));
 				emp.setEmpId(rs.getInt(1));
 				emp.setSalary(rs.getDouble(3));
+				emp.setExperience(rs.getFloat(5));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -125,7 +131,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public List<Employee> sortEmployeesBySalary() {
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			statement = connection.prepareStatement("select * from employees order by salary");
+			PreparedStatement statement = connection.prepareStatement("select * from employees order by salary");
 			ResultSet rs = statement.executeQuery();
 			Employee emp;
 
@@ -135,6 +141,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 				emp.setName(rs.getString(2));
 				emp.setSalary(rs.getFloat(3));
 				emp.setDeptNo(rs.getInt(4));
+				emp.setExperience(rs.getFloat(5));
 				employees.add(emp);
 			}
 
@@ -147,7 +154,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public List<Employee> sortEmployeesByNameAndSalary() {
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			statement = connection.prepareStatement("select * from employees order by name, salary");
+			PreparedStatement statement = connection.prepareStatement("select * from employees order by name, salary");
 			ResultSet rs = statement.executeQuery();
 			Employee emp;
 
@@ -157,6 +164,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 				emp.setName(rs.getString(2));
 				emp.setSalary(rs.getFloat(3));
 				emp.setDeptNo(rs.getInt(4));
+				emp.setExperience(rs.getFloat(5));
 				employees.add(emp);
 			}
 
@@ -169,7 +177,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public List<Employee> sortEmployeesById() {
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			statement = connection.prepareStatement("select * from employees order by id");
+			PreparedStatement statement = connection.prepareStatement("select * from employees order by id");
 			ResultSet rs = statement.executeQuery();
 			Employee emp;
 
@@ -179,6 +187,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 				emp.setName(rs.getString(2));
 				emp.setSalary(rs.getFloat(3));
 				emp.setDeptNo(rs.getInt(4));
+				emp.setExperience(rs.getFloat(5));
 				employees.add(emp);
 			}
 
@@ -191,7 +200,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 	public List<Employee> sortEmployeesByDepartmentNumber() {
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			statement = connection.prepareStatement("select * from employees order by department");
+			PreparedStatement statement = connection.prepareStatement("select * from employees order by department");
 			ResultSet rs = statement.executeQuery();
 			Employee emp;
 
@@ -201,6 +210,7 @@ public class EmployeeDAOImplementation implements EmployeeDAO {
 				emp.setName(rs.getString(2));
 				emp.setSalary(rs.getFloat(3));
 				emp.setDeptNo(rs.getInt(4));
+				emp.setExperience(rs.getFloat(5));
 				employees.add(emp);
 			}
 

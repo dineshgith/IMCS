@@ -9,6 +9,24 @@ public class Employee {
 	private int empId;
 	private double salary;
 	private int deptNo;
+	private float experience;
+
+	public float getExperience() {
+		return experience;
+	}
+
+	public void setExperience(float experience) {
+		this.experience = experience;
+	}
+
+	public Employee(String name, int empId, double salary, int deptNo, float experience) {
+		super();
+		this.name = name;
+		this.empId = empId;
+		this.salary = salary;
+		this.deptNo = deptNo;
+		this.experience = experience;
+	}
 
 	public Employee(String name, int empId, double salary, int deptNo) {
 		super();
