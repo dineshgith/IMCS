@@ -1,7 +1,7 @@
 package com.employee.mavenjdbc;
 
 /**
- * Hello world!
+ * Hello world
  *
  */
 public class App 
